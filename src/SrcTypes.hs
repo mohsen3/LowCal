@@ -5,17 +5,17 @@ data SrcModule = SrcModule { srcFunctionDefs :: [SrcFunctionDef] } deriving (Eq,
 data SrcFunctionDef = SrcFunctionDef 
   { srcFunctionName :: String
   , srcFunctionArgs :: [String]
-  , srcFunctioBody :: [SrcExp]
+  , srcFunctionBody :: [SrcExp]
   } deriving (Eq, Show)
 
 data SrcExp =
     SrcIfExp { srcIfCondition :: SrcExp, srcThenBlock :: [SrcExp], srcElseBlock :: [SrcExp] } |
     SrcLetExp { srcLetVarName :: String, srcLetValue :: SrcExp } |
     SrcFunctionCall { srcFunctionCallModule :: Maybe String, srcFunctionCallName :: String, srcFunctionCallArgs :: [SrcExp] } |
-    SrcExpSimpleValue { srcExpValue :: SrcValue } |
+    SrcExpPrimitive { srcExpPrimitive :: SrcPrimitive } |
     SrcExpList { srcExpListValues :: [SrcExp] } deriving (Eq, Show)
 
-data SrcValue =
+data SrcPrimitive =
     SrcIntValue Integer |
     SrcBoolean Bool |
     SrcHole deriving (Eq, Show)

@@ -1,6 +1,7 @@
 module Main where
 
-import SrcTypes
+import Text.Megaparsec (parseTest)
+import SrcParser
 
 main :: IO ()
-main = print $ SrcIntValue 1
+main = parseTest functionParser (unlines ["def simple(a, y) do", " 1 2", "end"])

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: b37e1aff6364850868d59443a4d420a35a78fb326740cf0620992e82691a814b
+-- hash: 619d6e89f8ab8831892373700a99ee3dd21133e69064ca299aa959b282180527
 
 name:           LowCal
 version:        0.1.0.0
@@ -27,6 +27,7 @@ source-repository head
 
 library
   exposed-modules:
+      SrcParser
       SrcTypes
   other-modules:
       Paths_LowCal
@@ -34,6 +35,9 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , megaparsec
+    , parser-combinators
+    , text
   default-language: Haskell2010
 
 executable LowCal-exe
@@ -46,6 +50,9 @@ executable LowCal-exe
   build-depends:
       LowCal
     , base >=4.7 && <5
+    , megaparsec
+    , parser-combinators
+    , text
   default-language: Haskell2010
 
 test-suite LowCal-test
@@ -59,4 +66,9 @@ test-suite LowCal-test
   build-depends:
       LowCal
     , base >=4.7 && <5
+    , hspec
+    , hspec-megaparsec
+    , megaparsec
+    , parser-combinators
+    , text
   default-language: Haskell2010
