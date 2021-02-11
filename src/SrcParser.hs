@@ -2,13 +2,15 @@ module SrcParser where
 
 import SrcTypes
 
-import Control.Monad (void)
+import Control.Monad (void, when, unless, guard)
 import Data.Void
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 
 type Parser = Parsec Void String
+
+keywords = ["def", "do", "end"]
 
 sc :: Parser ()
 sc = L.space
@@ -26,24 +28,27 @@ lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc
 
 lowerCaseName :: String -> Parser String
-lowerCaseName name = do
-    first <- lowerChar <?> name
+lowerCaseName label = do
+    first <- lowerChar <?> label
     rest <- many alphaNumChar
-    return (first:rest)
+    let name = first:rest
+    if name `elem` keywords
+    then
+      fail "keyword found"
+    else
+      return name
 
 functionParser :: Parser SrcFunctionDef 
 functionParser = do
   keyword "def"
   name <- lowerCaseName "functionName"
   args <- between (symbol "(") (symbol ")") (lowerCaseName "functionArg" `sepBy` symbol ",")
-  keyword "do"
-  expressions <- some expressionParser
-  keyword "end"
+  expressions <- between (keyword "do") (keyword "end") (some $ try expressionParser)
   -- ...
   return $ SrcFunctionDef name args expressions
 
 expressionParser :: Parser SrcExp
-expressionParser = choice [primitiveParser, listParser] <?> "expression"
+expressionParser = choice [primitiveParser, listParser, varParser] <?> "expression"
   where
       listParser = do
           items <- between (symbol "[") (symbol "]") (expressionParser `sepBy` symbol ",")
@@ -52,6 +57,10 @@ expressionParser = choice [primitiveParser, listParser] <?> "expression"
       primitiveParser = do
           val <- valueParser
           return $ SrcExpPrimitive val
+
+      varParser = do
+          name <- lowerCaseName "variableName"
+          return $ SrcExpVar name
 
 valueParser :: Parser SrcPrimitive
 valueParser = choice [holeParser, intParser]

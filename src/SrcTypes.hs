@@ -13,7 +13,8 @@ data SrcExp =
     SrcLetExp { srcLetVarName :: String, srcLetValue :: SrcExp } |
     SrcFunctionCall { srcFunctionCallModule :: Maybe String, srcFunctionCallName :: String, srcFunctionCallArgs :: [SrcExp] } |
     SrcExpPrimitive { srcExpPrimitive :: SrcPrimitive } |
-    SrcExpList { srcExpListValues :: [SrcExp] } deriving (Eq, Show)
+    SrcExpList { srcExpListValues :: [SrcExp] } |
+    SrcExpVar { srcExpVarName :: String } deriving (Eq, Show)
 
 data SrcPrimitive =
     SrcIntValue Integer |
