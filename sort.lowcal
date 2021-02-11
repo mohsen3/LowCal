@@ -1,10 +1,13 @@
+/*
+ This comment is ignored!
+*/
 def sort(list) do
-  if List.length(list) <= 1
+  if Int.lte(List.length(list), 1)
   then
     list
   else
     let pivot = List.get(list, 0)
-    let rest = List.sublist(list, 1, List.length(list) - 1)
+    let rest = List.sublist(list, 1, Int.sub(List.length(list), 1))
     let h1 = List.filter(sort(rest), Integer.gte(_, pivot))
     let h2 = List.filter(sort(rest), Integer.lt(_, pivot))
     List.append(List.append(h1, [pivot]), h2)
@@ -12,7 +15,7 @@ def sort(list) do
 end
 
 def main do
-  let list = [10, 3, 4, 1, 5, 2, 13]
+  let list = [10, 10, 3, 4, 1, 5, 2, 13]
   IO.print(sort(list))
 end
 

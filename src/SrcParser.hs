@@ -22,7 +22,7 @@ symbol :: String -> Parser String
 symbol = L.symbol sc
 
 keyword :: String -> Parser ()
-keyword kw = void $ string kw <* space1
+keyword kw = void $ sc *> string kw <* sc
 
 lexeme :: Parser a -> Parser a
 lexeme = L.lexeme sc
