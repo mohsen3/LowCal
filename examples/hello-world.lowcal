@@ -1,0 +1,4 @@
+// Hello, LowCal!
+def main() do
+  IO.print("Hello, world!")
+end

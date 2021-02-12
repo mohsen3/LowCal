@@ -1,0 +1,13 @@
+def reduce(init, fn, list) do
+  if Int.eq(List.length(list), 0) then
+    init
+  else
+    let head = List.get(list, 0)
+    let rest = List.sublist(list, 1, List.length(list))
+    reduce(fn(init, head), fn, rest)
+  end
+end
+
+def main() do
+  IO.print(reduce(0, Int.add(_, _), [1, 2, 3, 4, 5]))
+end

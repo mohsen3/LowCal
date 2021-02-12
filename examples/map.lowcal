@@ -1,0 +1,13 @@
+def map(fn, list) do
+  if Int.eq(List.length(list), 0) then
+    []
+  else
+    let head = List.get(list, 0)
+    let rest = List.sublist(list, 1, List.length(list))
+    List.append([fn(head)], map(fn, rest))
+  end
+end
+
+def main() do
+  IO.print(map(Int.pow(_, 2), [1, 2, 3, 4, 5, 6]))
+end
