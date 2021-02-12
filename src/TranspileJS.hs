@@ -37,7 +37,7 @@ transpileExp (SrcIfExp cond thenBlock elseBlock) =
       })()
     |]
 
-transpileExp (SrcFunctionCall (Just moduleName) funcName realArgs) =
+transpileExp (SrcFunctionCall maybeModuleName funcName realArgs) =
     if holeCount > 0
     then
         let fnHoleParams = intercalate ", " ["hole_" ++ show i | i <- [1..holeCount]]
@@ -53,25 +53,25 @@ transpileExp (SrcFunctionCall (Just moduleName) funcName realArgs) =
 
         args = replaceHoles realArgs [1..holeCount]
 
-        funcCall =
-            case (moduleName, funcName) of
-                ("IO", "print") -> concat ["console.log(", transpileExp (head args), ")"]
-                ("List", "append") -> concat ["(", transpileExp (head args), ").concat(", transpileExp (last args), ")"]
-                ("List", "filter") -> concat ["(", transpileExp (head args), ").filter(", transpileExp (last args), ")"]
-                ("List", "get") -> concat ["(", transpileExp (head args), ")[", transpileExp (last args), "]"]
-                ("List", "length") -> concat ["(", transpileExp (head args), ").length"]
-                ("List", "sublist") -> concat ["(", transpileExp (head args), ").slice(", transpileExp (args !! 1), ", ", transpileExp (args !! 2), ")"]
-                ("Int", "eq") -> opstr "==="
-                ("Int", "gt") -> opstr ">"
-                ("Int", "gte") -> opstr ">="
-                ("Int", "lt") -> opstr "<"
-                ("Int", "lte") -> opstr "<="
-                ("Int", "sub") -> opstr "-"
-                (_, _) -> error $ "Unknown native function: " ++ moduleName ++ "." ++ funcName
+        funcCall = case maybeModuleName of
+            Just moduleName -> nativeFuncCall moduleName funcName
+            Nothing -> concat [funcName, "(", intercalate ", " $ fmap transpileExp args ,")"]
+
+        nativeFuncCall "IO" "print" = concat ["console.log(", transpileExp (head args), ")"]
+        nativeFuncCall "List" "append" = concat ["(", transpileExp (head args), ").concat(", transpileExp (last args), ")"]
+        nativeFuncCall "List" "filter" = concat ["(", transpileExp (head args), ").filter(", transpileExp (last args), ")"]
+        nativeFuncCall "List" "get" = concat ["(", transpileExp (head args), ")[", transpileExp (last args), "]"]
+        nativeFuncCall "List" "length" = concat ["(", transpileExp (head args), ").length"]
+        nativeFuncCall "List" "sublist" = concat ["(", transpileExp (head args), ").slice(", transpileExp (args !! 1), ", ", transpileExp (args !! 2), ")"]
+        nativeFuncCall "Int" "eq" = opstr "==="
+        nativeFuncCall "Int" "gt" = opstr ">"
+        nativeFuncCall "Int" "gte" = opstr ">="
+        nativeFuncCall "Int" "lt" = opstr "<"
+        nativeFuncCall "Int" "lte" = opstr "<="
+        nativeFuncCall "Int" "sub" = opstr "-"
+        nativeFuncCall moduleName funcName = error $ "Unknown native function: " ++ moduleName ++ "." ++ funcName
 
         opstr op  = concat [ "(", transpileExp (head args), ") ", op, " (", transpileExp (last args), ")"]
-
-transpileExp (SrcFunctionCall Nothing funcName args) = concat [funcName, "(", intercalate ", " $ fmap transpileExp args ,")"]
 
 transpileBlock :: [SrcExp] -> String
 transpileBlock [x] = concat ["return (", transpileExp x, ");"]
