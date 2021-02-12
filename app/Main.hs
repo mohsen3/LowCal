@@ -1,12 +1,18 @@
 module Main where
 
+import Control.Monad (when)
 import Text.Megaparsec (parse, parseTest)
+import System.Environment (getArgs)
+
 import SrcParser
 import TranspileJS
 
 main :: IO ()
 main = do
-    let fileName = "sort.lowcal"
+    args <- getArgs
+    when (length args /= 1) (error "Usage: lowcalc filepath.lowcal")
+
+    let fileName = head args
     src <- readFile fileName
     case parse moduleParser fileName src of
         Left err -> print $ err
