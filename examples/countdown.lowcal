@@ -1,0 +1,16 @@
+def countDown(n, fn) do
+  if Int.gt(n, 0) then
+    IO.print(n)
+    countDown(Int.sub(n, 1), fn)
+  else
+    fn("Hello, world!")
+  end
+end
+
+def blastOff(ignore, msg) do
+  IO.print(msg)
+end
+
+def main() do
+  countDown(3, blastOff(_, "Hello, world!"))
+end

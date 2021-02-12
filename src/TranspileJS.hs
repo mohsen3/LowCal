@@ -61,9 +61,11 @@ transpileExp (SrcFunctionCall (Just moduleName) funcName realArgs) =
                 ("List", "get") -> concat ["(", transpileExp (head args), ")[", transpileExp (last args), "]"]
                 ("List", "length") -> concat ["(", transpileExp (head args), ").length"]
                 ("List", "sublist") -> concat ["(", transpileExp (head args), ").slice(", transpileExp (args !! 1), ", ", transpileExp (args !! 2), ")"]
-                ("Int", "lte") -> opstr "<="
-                ("Int", "lt") -> opstr "<"
+                ("Int", "eq") -> opstr "==="
+                ("Int", "gt") -> opstr ">"
                 ("Int", "gte") -> opstr ">="
+                ("Int", "lt") -> opstr "<"
+                ("Int", "lte") -> opstr "<="
                 ("Int", "sub") -> opstr "-"
                 (_, _) -> error $ "Unknown native function: " ++ moduleName ++ "." ++ funcName
 
