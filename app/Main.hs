@@ -18,6 +18,6 @@ main = do
     case parse moduleParser fileName src of
         Left err -> putStrLn (errorBundlePretty err)
         Right mod -> do
-            pPrint mod
-            putStrLn "******* JS ********"
+            -- pPrint mod
+            -- putStrLn "******* JS ********"
             putStr $ transpileModule mod

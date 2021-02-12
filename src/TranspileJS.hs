@@ -69,6 +69,8 @@ transpileExp (SrcFunctionCall maybeModuleName funcName realArgs) =
         nativeFuncCall "Int" "lt" = opstr "<"
         nativeFuncCall "Int" "lte" = opstr "<="
         nativeFuncCall "Int" "sub" = opstr "-"
+        nativeFuncCall "Int" "add" = opstr "+"
+        nativeFuncCall "Int" "pow" = opstr "**"
         nativeFuncCall moduleName funcName = error $ "Unknown native function: " ++ moduleName ++ "." ++ funcName
 
         opstr op  = concat [ "(", transpileExp (head args), ") ", op, " (", transpileExp (last args), ")"]
