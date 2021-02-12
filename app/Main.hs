@@ -1,9 +1,13 @@
 module Main where
 
-import Text.Megaparsec (parseTest)
+import Text.Megaparsec (parse, parseTest)
 import SrcParser
+import TranspileJS
 
 main :: IO ()
 main = do
-    src <- readFile "sort.lowcal"
-    parseTest moduleParser src
+    let fileName = "sort.lowcal"
+    src <- readFile fileName
+    case parse moduleParser fileName src of
+        Left err -> print $ err
+        Right mod -> putStr $ transpileModule mod

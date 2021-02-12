@@ -8,8 +8,8 @@ def sort(list) do
   else
     let pivot = List.get(list, 0)
     let rest = List.sublist(list, 1, Int.sub(List.length(list), 1))
-    let h1 = List.filter(sort(rest), Integer.gte(_, pivot))
-    let h2 = List.filter(sort(rest), Integer.lt(_, pivot))
+    let h1 = sort(List.filter(rest, Int.gte(_, pivot)))
+    let h2 = sort(List.filter(rest, Int.lt(_, pivot)))
     List.append(List.append(h1, [pivot]), h2)
   end
 end

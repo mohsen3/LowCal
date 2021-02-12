@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 619d6e89f8ab8831892373700a99ee3dd21133e69064ca299aa959b282180527
+-- hash: 4680098ba5d2bd0f433e5508b24d721c6cd35db1298c6c4337e185761022555a
 
 name:           LowCal
 version:        0.1.0.0
@@ -29,6 +29,7 @@ library
   exposed-modules:
       SrcParser
       SrcTypes
+      TranspileJS
   other-modules:
       Paths_LowCal
   hs-source-dirs:
