@@ -19,5 +19,6 @@ data SrcExp =
 data SrcPrimitive =
     SrcIntValue Integer |
     SrcBoolean Bool |
+    SrcString String |
     SrcHole deriving (Eq, Show)
 

@@ -92,7 +92,7 @@ expressionParser = choice [letParser, ifParser, primitiveParser, listParser, try
 
 
 valueParser :: Parser SrcPrimitive
-valueParser = choice [holeParser, intParser]
+valueParser = choice [holeParser, intParser, stringParser]
   where
     holeParser = do
         symbol "_"
@@ -100,3 +100,7 @@ valueParser = choice [holeParser, intParser]
     intParser = do
         num <- lexeme L.decimal
         return $ SrcIntValue num
+    stringParser = do
+        char '\"'
+        str <- manyTill L.charLiteral (char '\"')
+        return $ SrcString str

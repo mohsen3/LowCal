@@ -79,4 +79,5 @@ transpilePrimitive :: SrcPrimitive -> String
 transpilePrimitive (SrcIntValue v) = show v
 transpilePrimitive (SrcBoolean True) = "true"
 transpilePrimitive (SrcBoolean False) = "false"
-transpilePrimitive (SrcHole) = "____" -- error "Cannot transpile hole!"
+transpilePrimitive (SrcString v) = show v
+transpilePrimitive (SrcHole) = error "Cannot transpile hole!"
