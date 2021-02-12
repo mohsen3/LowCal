@@ -6,4 +6,4 @@ import SrcParser
 main :: IO ()
 main = do
     src <- readFile "sort.lowcal"
-    parseTest functionParser src
+    parseTest moduleParser src

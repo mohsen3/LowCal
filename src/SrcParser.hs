@@ -49,6 +49,9 @@ upperCaseName label = do
     else
       return name
 
+moduleParser :: Parser SrcModule
+moduleParser = fmap SrcModule (many functionParser <* eof)
+
 functionParser :: Parser SrcFunctionDef 
 functionParser = do
   keyword "def"
