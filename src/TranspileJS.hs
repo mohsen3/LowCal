@@ -1,7 +1,12 @@
+{-# LANGUAGE QuasiQuotes #-}
+
 module TranspileJS where
 
 import Data.List (intercalate)
+import Data.String.Interpolate ( i )
+
 import SrcTypes
+
 
 transpileModule :: SrcModule -> String
 transpileModule (SrcModule funcDefs) =
@@ -13,15 +18,7 @@ transpileModule (SrcModule funcDefs) =
 
 transpileFunction :: SrcFunctionDef -> String
 transpileFunction (SrcFunctionDef name args body) =
-    concat [ "function "
-           , name
-           , "("
-           , intercalate ", " args
-           , ")"
-           , "{"
-           , transpileBlock body
-           , "}"
-           ]
+    [i|function #{name}(#{intercalate ", " args}) { #{transpileBlock body} }|]
 
 transpileExp :: SrcExp -> String
 transpileExp (SrcExpPrimitive prim) = transpilePrimitive prim
@@ -29,20 +26,22 @@ transpileExp (SrcExpVar varName) = varName
 transpileExp (SrcExpList vals) = concat ["[", intercalate ", " $ fmap transpileExp vals, "]"]
 transpileExp (SrcLetExp lhs rhs) = concat ["var ", lhs, " = ", transpileExp rhs]
 transpileExp (SrcIfExp cond thenBlock elseBlock) =
-    intercalate "\n" [ "(function(){"
-                     , "if ("
-                     , transpileExp cond
-                     , ") {"
-                     , transpileBlock thenBlock
-                     , "} else {"
-                     , transpileBlock elseBlock
-                     , "}"
-                     , "})()"
-                     ]
+    [i|(function(){
+         if (
+             #{transpileExp cond}
+            ) {
+            #{transpileBlock thenBlock}
+         } else {
+            #{transpileBlock elseBlock}
+         }
+      })()
+    |]
+
 transpileExp (SrcFunctionCall (Just moduleName) funcName realArgs) =
     if holeCount > 0
     then
-        concat [ "function(", intercalate ", " ["hole_" ++ show i | i <- [1..holeCount]], ") { return (", funcCall ,"); }" ]
+        let fnHoleParams = intercalate ", " ["hole_" ++ show i | i <- [1..holeCount]]
+        in  [i|function(#{fnHoleParams}) { return (#{funcCall}); }|]
     else
         funcCall
     where

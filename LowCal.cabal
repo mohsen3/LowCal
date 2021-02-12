@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4680098ba5d2bd0f433e5508b24d721c6cd35db1298c6c4337e185761022555a
+-- hash: 35872151f08de754f5224ba3c42c2561cac969995c0d38aab29f868907d9b407
 
 name:           LowCal
 version:        0.1.0.0
@@ -38,6 +38,7 @@ library
       base >=4.7 && <5
     , megaparsec
     , parser-combinators
+    , string-interpolate
     , text
   default-language: Haskell2010
 
@@ -53,6 +54,7 @@ executable LowCal-exe
     , base >=4.7 && <5
     , megaparsec
     , parser-combinators
+    , string-interpolate
     , text
   default-language: Haskell2010
 
@@ -71,5 +73,6 @@ test-suite LowCal-test
     , hspec-megaparsec
     , megaparsec
     , parser-combinators
+    , string-interpolate
     , text
   default-language: Haskell2010
