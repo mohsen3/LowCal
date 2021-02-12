@@ -1,7 +1,7 @@
 module Main where
 
 import Control.Monad (when)
-import Text.Megaparsec (parse, parseTest)
+import Text.Megaparsec (parse, errorBundlePretty)
 import Text.Pretty.Simple (pPrint)
 import System.Environment (getArgs)
 
@@ -16,7 +16,7 @@ main = do
     let fileName = head args
     src <- readFile fileName
     case parse moduleParser fileName src of
-        Left err -> print $ err
+        Left err -> putStrLn (errorBundlePretty err)
         Right mod -> do
             pPrint mod
             putStrLn "******* JS ********"
