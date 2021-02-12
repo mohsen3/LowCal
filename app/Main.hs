@@ -2,6 +2,7 @@ module Main where
 
 import Control.Monad (when)
 import Text.Megaparsec (parse, parseTest)
+import Text.Pretty.Simple (pPrint)
 import System.Environment (getArgs)
 
 import SrcParser
@@ -16,4 +17,7 @@ main = do
     src <- readFile fileName
     case parse moduleParser fileName src of
         Left err -> print $ err
-        Right mod -> putStr $ transpileModule mod
+        Right mod -> do
+            pPrint mod
+            putStrLn "******* JS ********"
+            putStr $ transpileModule mod
