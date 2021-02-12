@@ -7,7 +7,7 @@ def sort(list) do
     list
   else
     let pivot = List.get(list, 0)
-    let rest = List.sublist(list, 1, Int.sub(List.length(list), 1))
+    let rest = List.sublist(list, 1, List.length(list))
     let h1 = sort(List.filter(rest, Int.gte(_, pivot)))
     let h2 = sort(List.filter(rest, Int.lt(_, pivot)))
     List.append(List.append(h1, [pivot]), h2)

@@ -15,7 +15,7 @@ transpileFunction (SrcFunctionDef name args body) =
            , intercalate ", " args
            , ")"
            , "{"
-           , intercalate ";\n" $ fmap transpileExp body
+           , transpileBlock body
            , "}"
            ]
 
