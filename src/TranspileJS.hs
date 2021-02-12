@@ -5,7 +5,11 @@ import SrcTypes
 
 transpileModule :: SrcModule -> String
 transpileModule (SrcModule funcDefs) =
-    unlines $ fmap transpileFunction funcDefs
+    let
+        js = unlines $ fmap transpileFunction funcDefs
+        executable = any (("main" ==) . srcFunctionName) funcDefs
+    in 
+        if executable then js ++ "\nmain();" else js
 
 transpileFunction :: SrcFunctionDef -> String
 transpileFunction (SrcFunctionDef name args body) =
