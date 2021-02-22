@@ -12,7 +12,7 @@ transpileModule :: SrcModule -> String
 transpileModule (SrcModule funcDefs) =
     let
         js = unlines $ fmap transpileFunction funcDefs
-        executable = any (("main" ==) . srcFunctionName) funcDefs
+        executable = any (\(SrcFunctionDef fname _ _) -> (fname == "main")) funcDefs
     in 
         if executable then js ++ "\nmain();" else js
 
