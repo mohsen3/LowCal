@@ -13,6 +13,8 @@ It transpiles to JavaScript.
       return 1;
     }
 
+See the `examples` folder for more examples.
+
 ## Getting started
 
 1. Install [stack](https://docs.haskellstack.org/en/stable/install_and_upgrade/)
